@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zdh.dao.WordListDao">
+    <select id="getAllWord" resultType="zdh.Bean.Word">
+        SELECT * FROM wordlist
+        <if test="en !=null ">
+            WHERE en like concat('%',#{en},'%')
+        </if>
+        LIMIT #{pageStart},#{pageSize}
+    </select>
+
+    <select id="getWordCounts" resultType="java.lang.Integer">
+        SELECT count(*) FROM wordlist
+        <if test="en !=null ">
+            WHERE en like concat('%',#{en},'%')
+        </if>
+    </select>
+
+    <insert id="addWord">
+        insert into wordlist (en,ch,pronounce,id) value (#{en},#{ch},#{pronounce},#{id})
+    </insert>
+
+    <delete id="deleteWord">
+        delete from wordlist where id=#{id}
+    </delete>
+
+    <select id="getUpdateWord" resultType="zdh.Bean.Word">
+        SELECT * FROM wordlist WHERE id = #{id}
+    </select>
+
+    <update id="editWord">
+        UPDATE wordlist SET en = #{en} , ch = #{ch} ,
+                            pronounce = #{pronounce} WHERE id = #{id}
+    </update>
+</mapper>
